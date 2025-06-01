@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Reservations from './pages/Reservations';
 import MyReservation from './pages/MyReservation';
+import ReservationForm from './pages/ReservationForm';
 
 function App() {
   return (
@@ -14,9 +15,19 @@ function App() {
       <Header />
       <main className="p-4">
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Protected routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/reservations"
             element={
@@ -30,6 +41,16 @@ function App() {
             element={
               <ProtectedRoute>
                 <MyReservation />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Нов route: страница за резервация на конкретна стая */}
+          <Route
+            path="/reserve/:roomId"
+            element={
+              <ProtectedRoute>
+                <ReservationForm />
               </ProtectedRoute>
             }
           />

@@ -6,3 +6,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         model = Reservation
         fields = ('id', 'user', 'room', 'check_in', 'check_out')
         read_only_fields = ('user',)
+
+
+def validate(self, data):
+    return data

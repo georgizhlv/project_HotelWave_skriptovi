@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 import RoomCard from '../components/RoomCard';
-import ReservationForm from '../components/ReservationForm';
 
 const Home = () => {
-  const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [rooms, setRooms]     = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/rooms/')
+    api.get('/api/rooms/') 
       .then(res => setRooms(res.data))
-      .catch(err => console.error(err));
+      .catch(err => console.error('Error fetching rooms:', err))
+      .finally(() => setLoading(false));
   }, []);
 
+  if (loading) {
+    return <p className="text-center mt-8">Loading rooms…</p>;
+  }
+
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {selectedRoom ? (
-        <div className="col-span-full">
-          <button
-            className="mb-4 text-blue-500"
-            onClick={() => setSelectedRoom(null)}
-          >
-            &larr; Back
-          </button>
-          <ReservationForm
-            room={selectedRoom}
-            onSuccess={() => {
-              setSelectedRoom(null);
-              alert('Reservation created!');
-            }}
-          />
-        </div>
+    <div className="p-4">
+      {rooms.length === 0 ? (
+        <p className="text-center mt-8">No rooms available.</p>
       ) : (
-        rooms.map(room => (
-          <RoomCard key={room.id} room={room} onSelect={setSelectedRoom} />
-        ))
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {rooms.map(room => (
+            <RoomCard 
+              key={room.id} 
+              room={room} 
+              onSelect={() => { /*...*/ }} 
+            />
+          ))}
+        </div>
       )}
     </div>
   );
