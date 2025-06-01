@@ -1,24 +1,37 @@
+// src/pages/Login.jsx
+
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        process.env.REACT_APP_API_URL + '/accounts/login/',
-        { email, password }
-      );
-      localStorage.setItem('token', response.data.access);
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-      alert('Invalid credentials');
+      // Изпращаме email+password → MyTokenObtainPairSerializer ще се погрижи да ги разпознае
+      const { data } = await api.post('/api/accounts/login/', { email, password });
+      localStorage.setItem('token', data.access);
+      navigate('/', { replace: true });
+    } catch (err) {
+      console.error('Login error:', err);
+      if (err.response) {
+        const data = err.response.data;
+        let messages = '';
+        for (const key in data) {
+          const fieldErrors = data[key];
+          if (Array.isArray(fieldErrors)) {
+            messages += `${key}: ${fieldErrors.join(' ')}\n`;
+          } else {
+            messages += `${key}: ${fieldErrors}\n`;
+          }
+        }
+        return alert(messages.trim());
+      }
+      alert('Невалидни потребителски данни');
     }
   };
 
@@ -30,9 +43,9 @@ const Login = () => {
           <label className="block mb-1">Email</label>
           <input
             type="email"
+            className="w-full border p-2 rounded"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border p-2 rounded"
             required
           />
         </div>
@@ -40,9 +53,9 @@ const Login = () => {
           <label className="block mb-1">Password</label>
           <input
             type="password"
+            className="w-full border p-2 rounded"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border p-2 rounded"
             required
           />
         </div>
