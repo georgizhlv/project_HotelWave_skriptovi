@@ -5,9 +5,9 @@ from .serializers import RoomSerializer
 
 class RoomListAPIView(generics.ListAPIView):
     queryset = Room.objects.all()
-    serializer_class = RoomSerializer
+    serializer_class = RoomSerializer #vrushta spisuka sus vsichki stai
 
 class RoomDetailAPIView(generics.RetrieveAPIView):
     queryset = Room.objects.all()
-    serializer_class = RoomSerializer
+    serializer_class = RoomSerializer #detaili za ednata staq
 

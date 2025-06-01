@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const ReservationForm = ({ room, onSuccess }) => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
     try {
-      await axios.post(
-        process.env.REACT_APP_API_URL + '/reservations/',
-        { room: room.id, check_in: checkIn, check_out: checkOut },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.post('/reservations/', {
+        room: room.id,
+        check_in: checkIn,
+        check_out: checkOut
+      });
       onSuccess();
     } catch (error) {
       console.error(error);
@@ -29,7 +28,7 @@ const ReservationForm = ({ room, onSuccess }) => {
         <input
           type="date"
           value={checkIn}
-          onChange={(e) => setCheckIn(e.target.value)}
+          onChange={e => setCheckIn(e.target.value)}
           className="border p-2 w-full"
           required
         />
@@ -39,7 +38,7 @@ const ReservationForm = ({ room, onSuccess }) => {
         <input
           type="date"
           value={checkOut}
-          onChange={(e) => setCheckOut(e.target.value)}
+          onChange={e => setCheckOut(e.target.value)}
           className="border p-2 w-full"
           required
         />

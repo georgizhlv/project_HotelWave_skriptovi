@@ -4,10 +4,6 @@ from .models import Reservation
 from .serializers import ReservationSerializer
 
 class ReservationListCreateAPIView(generics.ListCreateAPIView):
-    """
-    GET  /api/reservations/      → всички резервации на текущия потребител
-    POST /api/reservations/      → създава нова резервация (user взет от request.user)
-    """
     serializer_class = ReservationSerializer
     permission_classes = (permissions.IsAuthenticated,)
 

@@ -2,9 +2,9 @@ from django.db import models
 
 class Room(models.Model):
     ROOM_TYPES = [
-        ('Basic', 'Basic'),
+        ('Basic',  'Basic'),
         ('Deluxe', 'Deluxe'),
-        ('Suite', 'Suite'),
+        ('Suite',  'Suite'),
     ]
 
     name  = models.CharField(max_length=100)
@@ -13,6 +13,7 @@ class Room(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.type})"
+
 
 
 
