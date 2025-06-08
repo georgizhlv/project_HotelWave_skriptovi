@@ -5,7 +5,8 @@ const RoomCard = ({ room }) => {
   const navigate = useNavigate();
 
   const handleBook = () => {
-    navigate(`/reserve/${room.id}`);
+    navigate("/reserve/" + room.id);
+
   };
 
   return (

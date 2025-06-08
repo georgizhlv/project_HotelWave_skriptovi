@@ -15,7 +15,7 @@ function App() {
       <Header />
       <main className="p-4">
         <Routes>
-          {/* Public routes */}
+          {/* Publichni routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
@@ -45,7 +45,7 @@ function App() {
             }
           />
 
-          {/* Нов route: страница за резервация на конкретна стая */}
+          {/*nov route: stranicata za rezervaciq na nova staq */}
           <Route
             path="/reserve/:roomId"
             element={
