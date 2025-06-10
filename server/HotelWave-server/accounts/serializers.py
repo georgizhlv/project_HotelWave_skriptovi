@@ -32,27 +32,18 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email')
 
-
-# ----------------------------------------------
-# Обновен MyTokenObtainPairSerializer:
-# ----------------------------------------------
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    # Премахваме полето username_field и въвеждаме email
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # TokenObtainPairSerializer дефинира полето username_field (по подразбиране 'username').
-        # Ние ще го премахнем и ще добавим вмъкнем поле email.
-
-        # 1) Премахваме полето, което идва от parent-а (username)
-        username_field = self.username_field  # обикновено 'username'
+        # Premahvane na poleto za username s email
+        username_field = self.username_field  
         self.fields.pop(username_field, None)
 
-        # 2) Добавяме email
         self.fields['email'] = serializers.EmailField(write_only=True)
 
     def validate(self, attrs):
-        # attrs вече съдържа 'email' и 'password'
+        #attrs poluchava email i parola
         email = attrs.get('email')
         password = attrs.get('password')
 
@@ -64,7 +55,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         if not user.check_password(password):
             raise serializers.ValidationError('No active account found with the given credentials')
 
-        # Подменяме attrs така, че parent.validate() да получи 'username'
+        # podmenqne na atters tacka che parent.validate() da poluchi username
         attrs[self.username_field] = user.username
 
         return super().validate(attrs)
